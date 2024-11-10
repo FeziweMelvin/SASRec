@@ -22,3 +22,23 @@ This repository contains the implementation of the SASRec model, a state-of-the-
 2. **Train the model**: After preparing your dataset, you can train the model by running the following command:
    ```bash
    python main.py --dataset your_dataset_name --train_dir /path/to/train_dir --batch_size 64 --lr 0.001 --maxlen 10
+
+
+
+Replace your_dataset_name with the actual dataset name and train_dir with the directory for training data.
+
+Evaluate the model: After training, you can evaluate the model performance using NDCG and Hit Rate on the test set.
+
+
+## Directory Structure:
+main.py: The main entry point for training and evaluation.
+model.py: Contains the model architecture and implementation.
+modules.py: Implements the core building blocks such as self-attention layers and other utility functions.
+util.py: Includes data processing, partitioning, and utility functions.
+data/: Folder containing dataset files.
+
+
+## bLicense:
+MIT License. See LICENSE for details.
+
+
