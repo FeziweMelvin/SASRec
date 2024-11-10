@@ -38,7 +38,7 @@ util.py: Includes data processing, partitioning, and utility functions.
 data/: Folder containing dataset files.
 
 
-## bLicense:
+## License:
 MIT License. See LICENSE for details.
 
 
