@@ -1,44 +1,31 @@
-# SASRec (Self-Attention Sequential Recommendation)
+# SASRec RCL (Self-Attention Sequential Recommendation with RCL)
 
-SASRec is a recommendation model that utilizes self-attention mechanisms to capture sequential user-item interactions for personalized recommendations. It is based on the Transformer architecture, commonly used in natural language processing tasks, but adapted for sequential recommendation systems.
+This project implements a **Sequential Recommender System** based on the SASRec (Self-Attention Sequential Recommendation) model. The optimal model version integrates **Reward-Conditioned Learning (RCL)**, leveraging curriculum learning principles to train on progressively challenging data. By gradually increasing sample difficulty, the RCL-enhanced model exhibits improved robustness and performance over the standard SASRec approach.
 
-This repository contains the implementation of the SASRec model, a state-of-the-art method for sequential recommendation tasks, which can learn from the order of user-item interactions to predict the next item a user will interact with.
+## Features
+- **Sequential Recommendation**: Based on the SASRec model, leveraging self-attention to capture dependencies in sequential user-item interactions.
+- **Reward-Conditioned Learning (RCL)**: Integrates curriculum learning principles by sampling data sequences of varying difficulties.
+- **Multi-Head Attention**: Uses multi-head attention layers to model the user-item sequence effectively.
+- **Embedding Layers**: Embedding layers for user and item IDs to represent them in dense vector spaces.
+- **Curriculum Learning Strategy**: Gradually trains on sequences from easy to hard, enhancing model capability in handling complex sequences.
+- **Flexible Batching**: WarpSampler efficiently generates batches of sequences with positive and negative samples for efficient training.
 
-## Features:
-- **Self-Attention Mechanism**: Leverages the Transformer architecture to model sequential dependencies in user behavior.
-- **Efficient Sampling**: Uses negative sampling and data partitioning for training and validation.
-- **Flexible Configuration**: Easily customizable parameters such as batch size, learning rate, and sequence length.
-- **Evaluation**: Implements standard evaluation metrics such as NDCG (Normalized Discounted Cumulative Gain) and Hit Rate for recommendation accuracy.
+## Models
 
-## Requirements:
-- TensorFlow (2.x)
-- TensorFlow Addons
-- numpy
-- random
-- Other dependencies (listed in `requirements.txt`)
+1. **SASRec**: The baseline model uses self-attention mechanisms to model sequential user patterns without curriculum learning.
+2. **SASRec with RCL**: Extends SASRec with Reward-Conditioned Learning, introducing curriculum learning by starting with easier samples (shorter sequences) and progressing to harder ones (longer sequences) throughout training.
 
-## Usage:
-1. **Prepare the dataset**: The dataset should consist of user-item interaction data, with each line representing a user-item interaction (user_id, item_id).
-2. **Train the model**: After preparing your dataset, you can train the model by running the following command:
-   ```bash
-   python main.py --dataset your_dataset_name --train_dir /path/to/train_dir --batch_size 64 --lr 0.001 --maxlen 10
+## Requirements
 
+- Python 3.x
+- TensorFlow 2.x
+- Numpy
+- Pandas
 
-
-Replace your_dataset_name with the actual dataset name and train_dir with the directory for training data.
-
-Evaluate the model: After training, you can evaluate the model performance using NDCG and Hit Rate on the test set.
+To install the necessary packages, run:
+```bash
+pip install -r requirements.txt
 
 
-## Directory Structure:
-main.py: The main entry point for training and evaluation.
-model.py: Contains the model architecture and implementation.
-modules.py: Implements the core building blocks such as self-attention layers and other utility functions.
-util.py: Includes data processing, partitioning, and utility functions.
-data/: Folder containing dataset files.
-
-
-## License:
-MIT License. See LICENSE for details.
 
 
