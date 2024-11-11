@@ -1,8 +1,12 @@
 from modules import *
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 
 class Model():
     def __init__(self, usernum, itemnum, args, reuse=None):
+
+
         self.is_training = tf.compat.v1.placeholder(tf.bool, shape=())
         self.u = tf.compat.v1.placeholder(tf.int32, shape=(None))
         self.input_seq = tf.compat.v1.placeholder(tf.int32, shape=(None, args.maxlen))
