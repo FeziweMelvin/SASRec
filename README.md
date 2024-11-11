@@ -22,9 +22,15 @@ This project implements a **Sequential Recommender System** based on the SASRec 
 - Numpy
 - Pandas
 
-To install the necessary packages, run:
+To run:
 ```bash
-pip install -r requirements.txt
+ python main.py --dataset testdata --train_dir /path/to/train_dir
+
+
+
+
+
+
 
 
 
