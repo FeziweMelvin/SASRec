@@ -1,66 +1,24 @@
-import gzip
+import pandas as pd
 from collections import defaultdict
-from datetime import datetime
+from data.clean import clean_dataset
 
+def process_data(data_path, min_ratings=5):
+    # Load and clean dataset
+    data = clean_dataset(pd.read_csv(data_path))
 
-def parse(path):
-    g = gzip.open(path, 'r')
-    for l in g:
-        yield eval(l)
+    # Ensure 'no_of_ratings' is numeric (convert if necessary)
+    data['no_of_ratings'] = pd.to_numeric(data['no_of_ratings'], errors='coerce')
 
+    # Filter items with fewer than 'min_ratings'
+    data = data[data['no_of_ratings'] >= min_ratings]
 
-countU = defaultdict(lambda: 0)
-countP = defaultdict(lambda: 0)
-line = 0
+    # Extract relevant columns
+    user_data = data[['name', 'no_of_ratings']]
+    num_users = data['name'].nunique()
+    num_items = len(data)  # Use total entries as item count for simplicity
 
-dataset_name = 'Beauty'
-f = open('reviews_' + dataset_name + '.txt', 'w')
-for l in parse('reviews_' + dataset_name + '.json.gz'):
-    line += 1
-    f.write(" ".join([l['reviewerID'], l['asin'], str(l['overall']), str(l['unixReviewTime'])]) + ' \n')
-    asin = l['asin']
-    rev = l['reviewerID']
-    time = l['unixReviewTime']
-    countU[rev] += 1
-    countP[asin] += 1
-f.close()
+    return user_data, num_users, num_items
 
-usermap = dict()
-usernum = 0
-itemmap = dict()
-itemnum = 0
-User = dict()
-for l in parse('reviews_' + dataset_name + '.json.gz'):
-    line += 1
-    asin = l['asin']
-    rev = l['reviewerID']
-    time = l['unixReviewTime']
-    if countU[rev] < 5 or countP[asin] < 5:
-        continue
-
-    if rev in usermap:
-        userid = usermap[rev]
-    else:
-        usernum += 1
-        userid = usernum
-        usermap[rev] = userid
-        User[userid] = []
-    if asin in itemmap:
-        itemid = itemmap[asin]
-    else:
-        itemnum += 1
-        itemid = itemnum
-        itemmap[asin] = itemid
-    User[userid].append([time, itemid])
-# sort reviews in User according to time
-
-for userid in User.keys():
-    User[userid].sort(key=lambda x: x[0])
-
-print usernum, itemnum
-
-f = open('Beauty.txt', 'w')
-for user in User.keys():
-    for i in User[user]:
-        f.write('%d %d\n' % (user, i[1]))
-f.close()
+# Test the function
+data_path = '/home/sagemaker-user/SASRec-1/data/testdata.csv'
+user_data, num_users, num_items = process_data(data_path)
